@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>永遠に読み込み中のプログレスバー</title>
+<style>
+  #progressbar {
+    width: 50%;
+    background-color: #ddd;
+    margin: 20px;
+    height: 30px;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #bar {
+    height: 100%;
+    background-color: #4CAF50;
+    width: 0%;
+    border-radius: 5px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    transition: width 0.1s linear;
+  }
+</style>
+</head>
+<body>
+<div id="progressbar">
+  <div id="bar">0%</div>
+</div>
+
+<script>
+  function updateProgress() {
+    var bar = document.getElementById('bar');
+    var width = 0;
+    var lastIncrement = 1; // 初期増加値
+    var id = setInterval(frame, 50);
+
+    function frame() {
+      if (width >= 99) {
+        clearInterval(id);
+      } else if (width < 85) {
+        width++;
+      } else if (width >= 85 && width < 99) {
+        // 85%から99%まで増加速度を徐々に下げる
+        lastIncrement *= 0.95;  // 増加速度を減速させる
+        width += lastIncrement;
+      }
+      bar.style.width = width.toFixed(1) + '%';
+      bar.textContent = Math.round(width) + '%';  // 整数に丸める
+    }
+  }
+
+  window.onload = function() {
+    setTimeout(updateProgress, 500);
+  };
+</script>
+</body>
+</html>
